@@ -1,4 +1,8 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<RANUISWANSONFOOTBALLCLUB_DATABASE>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("RANUISWANSONFOOTBALLCLUB_DATABASE") ?? throw new InvalidOperationException("Connection string 'RANUISWANSONFOOTBALLCLUB_DATABASE' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
