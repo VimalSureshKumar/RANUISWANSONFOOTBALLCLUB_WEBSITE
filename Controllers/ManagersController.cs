@@ -6,14 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RANUISWANSONFOOTBALLCLUB_WEBSITE.Models;
+using RANUISWANSONFOOTBALLCLUB_WEBSITEContext;
 
 namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
 {
     public class ManagersController : Controller
     {
-        private readonly RANUISWANSONFOOTBALLCLUB_DATABASE _context;
+        private readonly db _context;
 
-        public ManagersController(RANUISWANSONFOOTBALLCLUB_DATABASE context)
+        public ManagersController(db context)
         {
             _context = context;
         }

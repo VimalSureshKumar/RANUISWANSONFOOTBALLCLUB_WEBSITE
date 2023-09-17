@@ -6,14 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RANUISWANSONFOOTBALLCLUB_WEBSITE.Models;
+using RANUISWANSONFOOTBALLCLUB_WEBSITEContext;
 
 namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
 {
     public class TransactionsController : Controller
     {
-        private readonly RANUISWANSONFOOTBALLCLUB_DATABASE _context;
+        private readonly db _context;
 
-        public TransactionsController(RANUISWANSONFOOTBALLCLUB_DATABASE context)
+        public TransactionsController(db context)
         {
             _context = context;
         }

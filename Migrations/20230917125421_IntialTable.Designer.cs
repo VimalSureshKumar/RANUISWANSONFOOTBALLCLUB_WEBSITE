@@ -5,12 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-
-#nullable disable
+using RANUISWANSONFOOTBALLCLUB_WEBSITEContext;
 
 namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Migrations
 {
-    [DbContext(typeof(RANUISWANSONFOOTBALLCLUB_DATABASE))]
+    [DbContext(typeof(db))]
     [Migration("20230917125421_IntialTable")]
     partial class IntialTable
     {

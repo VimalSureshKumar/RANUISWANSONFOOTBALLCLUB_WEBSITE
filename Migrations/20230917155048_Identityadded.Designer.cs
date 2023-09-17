@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RANUISWANSONFOOTBALLCLUB_WEBSITEContext;
 
@@ -11,9 +12,11 @@ using RANUISWANSONFOOTBALLCLUB_WEBSITEContext;
 namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Migrations
 {
     [DbContext(typeof(db))]
-    partial class RANUISWANSONFOOTBALLCLUB_DATABASEModelSnapshot : ModelSnapshot
+    [Migration("20230917155048_Identityadded")]
+    partial class Identityadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
