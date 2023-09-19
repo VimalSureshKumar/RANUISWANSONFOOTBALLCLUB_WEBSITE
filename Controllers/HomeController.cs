@@ -2,7 +2,7 @@
 using RANUISWANSONFOOTBALLCLUB_WEBSITE.Models;
 using System.Diagnostics;
 
-namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
+namespace MyUniversity.Controllers
 {
     public class HomeController : Controller
     {

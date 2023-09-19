@@ -1,4 +1,4 @@
-﻿@model RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Transactions
+﻿@model RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Transaction
 
 @{
     ViewData["Title"] = "Details";
@@ -7,7 +7,7 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Transactions</h4>
+    <h4>Transaction</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -16,9 +16,21 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Transaction_Fee)
         </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Transaction_Date)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Transaction_Date)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Players)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Players.PlayerId)
+        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Transaction_ID">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.TransactionId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

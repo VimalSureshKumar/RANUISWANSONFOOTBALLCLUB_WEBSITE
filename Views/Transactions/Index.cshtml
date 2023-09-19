@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Transactions>
+﻿@model IEnumerable<RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Transaction>
 
 @{
     ViewData["Title"] = "Index";
@@ -15,6 +15,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Transaction_Fee)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Transaction_Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Players)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -25,9 +31,15 @@
                 @Html.DisplayFor(modelItem => item.Transaction_Fee)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Transaction_ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Transaction_ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Transaction_ID">Delete</a>
+                @Html.DisplayFor(modelItem => item.Transaction_Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Players.PlayerId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TransactionId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.TransactionId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.TransactionId">Delete</a>
             </td>
         </tr>
 }

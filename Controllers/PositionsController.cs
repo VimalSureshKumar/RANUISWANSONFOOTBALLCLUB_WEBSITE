@@ -24,7 +24,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         {
               return _context.Positions != null ? 
                           View(await _context.Positions.ToListAsync()) :
-                          Problem("Entity set 'RANUISWANSONFOOTBALLCLUB_DATABASE.Positions'  is null.");
+                          Problem("Entity set 'db.Positions'  is null.");
         }
 
         // GET: Positions/Details/5
@@ -35,14 +35,14 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            var positions = await _context.Positions
-                .FirstOrDefaultAsync(m => m.Positions_ID == id);
-            if (positions == null)
+            var position = await _context.Positions
+                .FirstOrDefaultAsync(m => m.PositionId == id);
+            if (position == null)
             {
                 return NotFound();
             }
 
-            return View(positions);
+            return View(position);
         }
 
         // GET: Positions/Create
@@ -56,15 +56,15 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Positions_ID,Position_Name")] Positions positions)
+        public async Task<IActionResult> Create([Bind("PositionId,Position_Name")] Position position)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                _context.Add(positions);
+                _context.Add(position);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(positions);
+            return View(position);
         }
 
         // GET: Positions/Edit/5
@@ -75,12 +75,12 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            var positions = await _context.Positions.FindAsync(id);
-            if (positions == null)
+            var position = await _context.Positions.FindAsync(id);
+            if (position == null)
             {
                 return NotFound();
             }
-            return View(positions);
+            return View(position);
         }
 
         // POST: Positions/Edit/5
@@ -88,23 +88,23 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Positions_ID,Position_Name")] Positions positions)
+        public async Task<IActionResult> Edit(int id, [Bind("PositionId,Position_Name")] Position position)
         {
-            if (id != positions.Positions_ID)
+            if (id != position.PositionId)
             {
                 return NotFound();
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(positions);
+                    _context.Update(position);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PositionsExists(positions.Positions_ID))
+                    if (!PositionExists(position.PositionId))
                     {
                         return NotFound();
                     }
@@ -115,7 +115,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(positions);
+            return View(position);
         }
 
         // GET: Positions/Delete/5
@@ -126,14 +126,14 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            var positions = await _context.Positions
-                .FirstOrDefaultAsync(m => m.Positions_ID == id);
-            if (positions == null)
+            var position = await _context.Positions
+                .FirstOrDefaultAsync(m => m.PositionId == id);
+            if (position == null)
             {
                 return NotFound();
             }
 
-            return View(positions);
+            return View(position);
         }
 
         // POST: Positions/Delete/5
@@ -143,21 +143,21 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         {
             if (_context.Positions == null)
             {
-                return Problem("Entity set 'RANUISWANSONFOOTBALLCLUB_DATABASE.Positions'  is null.");
+                return Problem("Entity set 'db.Positions'  is null.");
             }
-            var positions = await _context.Positions.FindAsync(id);
-            if (positions != null)
+            var position = await _context.Positions.FindAsync(id);
+            if (position != null)
             {
-                _context.Positions.Remove(positions);
+                _context.Positions.Remove(position);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PositionsExists(int id)
+        private bool PositionExists(int id)
         {
-          return (_context.Positions?.Any(e => e.Positions_ID == id)).GetValueOrDefault();
+          return (_context.Positions?.Any(e => e.PositionId == id)).GetValueOrDefault();
         }
     }
 }

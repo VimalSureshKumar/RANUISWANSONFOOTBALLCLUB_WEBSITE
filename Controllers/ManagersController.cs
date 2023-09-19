@@ -24,7 +24,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         {
               return _context.Managers != null ? 
                           View(await _context.Managers.ToListAsync()) :
-                          Problem("Entity set 'RANUISWANSONFOOTBALLCLUB_DATABASE.Managers'  is null.");
+                          Problem("Entity set 'db.Managers'  is null.");
         }
 
         // GET: Managers/Details/5
@@ -35,14 +35,14 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            var managers = await _context.Managers
-                .FirstOrDefaultAsync(m => m.Manager_ID == id);
-            if (managers == null)
+            var manager = await _context.Managers
+                .FirstOrDefaultAsync(m => m.ManagerId == id);
+            if (manager == null)
             {
                 return NotFound();
             }
 
-            return View(managers);
+            return View(manager);
         }
 
         // GET: Managers/Create
@@ -56,15 +56,15 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Manager_ID,Manager_Name,Manager_Phone_Number,Manager_Email,Manger_Nationality")] Managers managers)
+        public async Task<IActionResult> Create([Bind("ManagerId,Manager_Name,Manager_Phone_Number,Manager_Email,Manager_Nationality")] Manager manager)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                _context.Add(managers);
+                _context.Add(manager);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(managers);
+            return View(manager);
         }
 
         // GET: Managers/Edit/5
@@ -75,12 +75,12 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            var managers = await _context.Managers.FindAsync(id);
-            if (managers == null)
+            var manager = await _context.Managers.FindAsync(id);
+            if (manager == null)
             {
                 return NotFound();
             }
-            return View(managers);
+            return View(manager);
         }
 
         // POST: Managers/Edit/5
@@ -88,23 +88,23 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Manager_ID,Manager_Name,Manager_Phone_Number,Manager_Email,Manger_Nationality")] Managers managers)
+        public async Task<IActionResult> Edit(int id, [Bind("ManagerId,Manager_Name,Manager_Phone_Number,Manager_Email,Manager_Nationality")] Manager manager)
         {
-            if (id != managers.Manager_ID)
+            if (id != manager.ManagerId)
             {
                 return NotFound();
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(managers);
+                    _context.Update(manager);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ManagersExists(managers.Manager_ID))
+                    if (!ManagerExists(manager.ManagerId))
                     {
                         return NotFound();
                     }
@@ -115,7 +115,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(managers);
+            return View(manager);
         }
 
         // GET: Managers/Delete/5
@@ -126,14 +126,14 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            var managers = await _context.Managers
-                .FirstOrDefaultAsync(m => m.Manager_ID == id);
-            if (managers == null)
+            var manager = await _context.Managers
+                .FirstOrDefaultAsync(m => m.ManagerId == id);
+            if (manager == null)
             {
                 return NotFound();
             }
 
-            return View(managers);
+            return View(manager);
         }
 
         // POST: Managers/Delete/5
@@ -143,21 +143,21 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         {
             if (_context.Managers == null)
             {
-                return Problem("Entity set 'RANUISWANSONFOOTBALLCLUB_DATABASE.Managers'  is null.");
+                return Problem("Entity set 'db.Managers'  is null.");
             }
-            var managers = await _context.Managers.FindAsync(id);
-            if (managers != null)
+            var manager = await _context.Managers.FindAsync(id);
+            if (manager != null)
             {
-                _context.Managers.Remove(managers);
+                _context.Managers.Remove(manager);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ManagersExists(int id)
+        private bool ManagerExists(int id)
         {
-          return (_context.Managers?.Any(e => e.Manager_ID == id)).GetValueOrDefault();
+          return (_context.Managers?.Any(e => e.ManagerId == id)).GetValueOrDefault();
         }
     }
 }

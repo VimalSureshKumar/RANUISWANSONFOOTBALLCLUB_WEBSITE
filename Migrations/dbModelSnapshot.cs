@@ -11,7 +11,7 @@ using RANUISWANSONFOOTBALLCLUB_WEBSITEContext;
 namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Migrations
 {
     [DbContext(typeof(db))]
-    partial class RANUISWANSONFOOTBALLCLUB_DATABASEModelSnapshot : ModelSnapshot
+    partial class dbModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -224,13 +224,13 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Coaches", b =>
+            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Coach", b =>
                 {
-                    b.Property<int>("Coaches_ID")
+                    b.Property<int>("CoachId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Coaches_ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CoachId"));
 
                     b.Property<string>("Coach_Email")
                         .IsRequired()
@@ -241,30 +241,24 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Coach_Nationality")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Coach_Phone_Number")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PlayersPlayer_ID")
-                        .HasColumnType("int");
+                    b.HasKey("CoachId");
 
-                    b.HasKey("Coaches_ID");
-
-                    b.HasIndex("PlayersPlayer_ID");
-
-                    b.ToTable("Coaches");
+                    b.ToTable("Coaches", (string)null);
                 });
 
-            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Managers", b =>
+            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Manager", b =>
                 {
-                    b.Property<int>("Manager_ID")
+                    b.Property<int>("ManagerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Manager_ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ManagerId"));
 
                     b.Property<string>("Manager_Email")
                         .IsRequired()
@@ -274,38 +268,36 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Manager_Nationality")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Manager_Phone_Number")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Manger_Nationality")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("ManagerId");
 
-                    b.Property<int?>("TeamsTeam_ID")
-                        .HasColumnType("int");
-
-                    b.HasKey("Manager_ID");
-
-                    b.HasIndex("TeamsTeam_ID");
-
-                    b.ToTable("Managers");
+                    b.ToTable("Managers", (string)null);
                 });
 
-            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Players", b =>
+            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Player", b =>
                 {
-                    b.Property<int>("Player_ID")
+                    b.Property<int>("PlayerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Player_ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlayerId"));
+
+                    b.Property<int>("CoachId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Player_Dob")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Player_Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Player_Gender")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Player_Name")
@@ -313,76 +305,86 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Player_Phone_Number")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PositionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlayerId");
+
+                    b.HasIndex("CoachId");
+
+                    b.HasIndex("PositionId");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("Players", (string)null);
+                });
+
+            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Position", b =>
+                {
+                    b.Property<int>("PositionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PositionId"));
+
+                    b.Property<string>("Position_Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TransactionsTransaction_ID")
-                        .HasColumnType("int");
+                    b.HasKey("PositionId");
 
-                    b.HasKey("Player_ID");
-
-                    b.HasIndex("TransactionsTransaction_ID");
-
-                    b.ToTable("Players");
+                    b.ToTable("Positions", (string)null);
                 });
 
-            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Positions", b =>
+            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Team", b =>
                 {
-                    b.Property<int>("Positions_ID")
+                    b.Property<int>("TeamId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Positions_ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeamId"));
 
-                    b.Property<int?>("PlayersPlayer_ID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Position_Name")
-                        .HasColumnType("int");
-
-                    b.HasKey("Positions_ID");
-
-                    b.HasIndex("PlayersPlayer_ID");
-
-                    b.ToTable("Positions");
-                });
-
-            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Teams", b =>
-                {
-                    b.Property<int>("Team_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Team_ID"));
-
-                    b.Property<int?>("PlayersPlayer_ID")
+                    b.Property<int>("ManagerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Team_Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Team_ID");
+                    b.HasKey("TeamId");
 
-                    b.HasIndex("PlayersPlayer_ID");
+                    b.HasIndex("ManagerId");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Team", (string)null);
                 });
 
-            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Transactions", b =>
+            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Transaction", b =>
                 {
-                    b.Property<int>("Transaction_ID")
+                    b.Property<int>("TransactionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Transaction_ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TransactionId"));
+
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Transaction_Date")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("Transaction_Fee")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("Transaction_ID");
+                    b.HasKey("TransactionId");
 
-                    b.ToTable("Transactions");
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("Transactions", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -436,43 +438,26 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Coaches", b =>
+            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Player", b =>
                 {
-                    b.HasOne("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Players", null)
-                        .WithMany("Coaches")
-                        .HasForeignKey("PlayersPlayer_ID");
-                });
-
-            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Managers", b =>
-                {
-                    b.HasOne("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Teams", null)
-                        .WithMany("Managers")
-                        .HasForeignKey("TeamsTeam_ID");
-                });
-
-            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Players", b =>
-                {
-                    b.HasOne("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Transactions", null)
+                    b.HasOne("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Coach", "Coaches")
                         .WithMany("Players")
-                        .HasForeignKey("TransactionsTransaction_ID");
-                });
+                        .HasForeignKey("CoachId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Positions", b =>
-                {
-                    b.HasOne("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Players", null)
-                        .WithMany("Positions")
-                        .HasForeignKey("PlayersPlayer_ID");
-                });
+                    b.HasOne("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Position", "Positions")
+                        .WithMany("Players")
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Teams", b =>
-                {
-                    b.HasOne("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Players", null)
-                        .WithMany("Teams")
-                        .HasForeignKey("PlayersPlayer_ID");
-                });
+                    b.HasOne("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Team", "Teams")
+                        .WithMany("Players")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Players", b =>
-                {
                     b.Navigation("Coaches");
 
                     b.Navigation("Positions");
@@ -480,12 +465,47 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Migrations
                     b.Navigation("Teams");
                 });
 
-            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Teams", b =>
+            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Team", b =>
                 {
+                    b.HasOne("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Manager", "Managers")
+                        .WithMany("Teams")
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Managers");
                 });
 
-            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Transactions", b =>
+            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Transaction", b =>
+                {
+                    b.HasOne("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Player", "Players")
+                        .WithMany("Transactions")
+                        .HasForeignKey("PlayerId");
+
+                    b.Navigation("Players");
+                });
+
+            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Coach", b =>
+                {
+                    b.Navigation("Players");
+                });
+
+            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Manager", b =>
+                {
+                    b.Navigation("Teams");
+                });
+
+            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Player", b =>
+                {
+                    b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Position", b =>
+                {
+                    b.Navigation("Players");
+                });
+
+            modelBuilder.Entity("RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Team", b =>
                 {
                     b.Navigation("Players");
                 });

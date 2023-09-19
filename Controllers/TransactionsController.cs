@@ -22,9 +22,8 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // GET: Transactions
         public async Task<IActionResult> Index()
         {
-              return _context.Transactions != null ? 
-                          View(await _context.Transactions.ToListAsync()) :
-                          Problem("Entity set 'RANUISWANSONFOOTBALLCLUB_DATABASE.Transactions'  is null.");
+            var db = _context.Transactions.Include(t => t.Players);
+            return View(await db.ToListAsync());
         }
 
         // GET: Transactions/Details/5
@@ -35,19 +34,21 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            var transactions = await _context.Transactions
-                .FirstOrDefaultAsync(m => m.Transaction_ID == id);
-            if (transactions == null)
+            var transaction = await _context.Transactions
+                .Include(t => t.Players)
+                .FirstOrDefaultAsync(m => m.TransactionId == id);
+            if (transaction == null)
             {
                 return NotFound();
             }
 
-            return View(transactions);
+            return View(transaction);
         }
 
         // GET: Transactions/Create
         public IActionResult Create()
         {
+            ViewData["PlayerId"] = new SelectList(_context.Players, "PlayerId", "PlayerId");
             return View();
         }
 
@@ -56,15 +57,16 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Transaction_ID,Transaction_Fee")] Transactions transactions)
+        public async Task<IActionResult> Create([Bind("TransactionId,Transaction_Fee,Transaction_Date,PlayerId")] Transaction transaction)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                _context.Add(transactions);
+                _context.Add(transaction);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(transactions);
+            ViewData["PlayerId"] = new SelectList(_context.Players, "PlayerId", "PlayerId", transaction.PlayerId);
+            return View(transaction);
         }
 
         // GET: Transactions/Edit/5
@@ -75,12 +77,13 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            var transactions = await _context.Transactions.FindAsync(id);
-            if (transactions == null)
+            var transaction = await _context.Transactions.FindAsync(id);
+            if (transaction == null)
             {
                 return NotFound();
             }
-            return View(transactions);
+            ViewData["PlayerId"] = new SelectList(_context.Players, "PlayerId", "PlayerId", transaction.PlayerId);
+            return View(transaction);
         }
 
         // POST: Transactions/Edit/5
@@ -88,23 +91,23 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Transaction_ID,Transaction_Fee")] Transactions transactions)
+        public async Task<IActionResult> Edit(int id, [Bind("TransactionId,Transaction_Fee,Transaction_Date,PlayerId")] Transaction transaction)
         {
-            if (id != transactions.Transaction_ID)
+            if (id != transaction.TransactionId)
             {
                 return NotFound();
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(transactions);
+                    _context.Update(transaction);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TransactionsExists(transactions.Transaction_ID))
+                    if (!TransactionExists(transaction.TransactionId))
                     {
                         return NotFound();
                     }
@@ -115,7 +118,8 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(transactions);
+            ViewData["PlayerId"] = new SelectList(_context.Players, "PlayerId", "PlayerId", transaction.PlayerId);
+            return View(transaction);
         }
 
         // GET: Transactions/Delete/5
@@ -126,14 +130,15 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            var transactions = await _context.Transactions
-                .FirstOrDefaultAsync(m => m.Transaction_ID == id);
-            if (transactions == null)
+            var transaction = await _context.Transactions
+                .Include(t => t.Players)
+                .FirstOrDefaultAsync(m => m.TransactionId == id);
+            if (transaction == null)
             {
                 return NotFound();
             }
 
-            return View(transactions);
+            return View(transaction);
         }
 
         // POST: Transactions/Delete/5
@@ -143,21 +148,21 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         {
             if (_context.Transactions == null)
             {
-                return Problem("Entity set 'RANUISWANSONFOOTBALLCLUB_DATABASE.Transactions'  is null.");
+                return Problem("Entity set 'db.Transactions'  is null.");
             }
-            var transactions = await _context.Transactions.FindAsync(id);
-            if (transactions != null)
+            var transaction = await _context.Transactions.FindAsync(id);
+            if (transaction != null)
             {
-                _context.Transactions.Remove(transactions);
+                _context.Transactions.Remove(transaction);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TransactionsExists(int id)
+        private bool TransactionExists(int id)
         {
-          return (_context.Transactions?.Any(e => e.Transaction_ID == id)).GetValueOrDefault();
+          return (_context.Transactions?.Any(e => e.TransactionId == id)).GetValueOrDefault();
         }
     }
 }

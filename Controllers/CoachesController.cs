@@ -24,7 +24,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         {
               return _context.Coaches != null ? 
                           View(await _context.Coaches.ToListAsync()) :
-                          Problem("Entity set 'RANUISWANSONFOOTBALLCLUB_DATABASE.Coaches'  is null.");
+                          Problem("Entity set 'db.Coaches'  is null.");
         }
 
         // GET: Coaches/Details/5
@@ -35,14 +35,14 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            var coaches = await _context.Coaches
-                .FirstOrDefaultAsync(m => m.Coaches_ID == id);
-            if (coaches == null)
+            var coach = await _context.Coaches
+                .FirstOrDefaultAsync(m => m.CoachId == id);
+            if (coach == null)
             {
                 return NotFound();
             }
 
-            return View(coaches);
+            return View(coach);
         }
 
         // GET: Coaches/Create
@@ -56,15 +56,15 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Coaches_ID,Coach_Name,Coach_Phone_Number,Coach_Email,Coach_Nationality")] Coaches coaches)
+        public async Task<IActionResult> Create([Bind("CoachId,Coach_Name,Coach_Phone_Number,Coach_Email,Coach_Nationality")] Coach coach)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                _context.Add(coaches);
+                _context.Add(coach);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(coaches);
+            return View(coach);
         }
 
         // GET: Coaches/Edit/5
@@ -75,12 +75,12 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            var coaches = await _context.Coaches.FindAsync(id);
-            if (coaches == null)
+            var coach = await _context.Coaches.FindAsync(id);
+            if (coach == null)
             {
                 return NotFound();
             }
-            return View(coaches);
+            return View(coach);
         }
 
         // POST: Coaches/Edit/5
@@ -88,23 +88,23 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Coaches_ID,Coach_Name,Coach_Phone_Number,Coach_Email,Coach_Nationality")] Coaches coaches)
+        public async Task<IActionResult> Edit(int id, [Bind("CoachId,Coach_Name,Coach_Phone_Number,Coach_Email,Coach_Nationality")] Coach coach)
         {
-            if (id != coaches.Coaches_ID)
+            if (id != coach.CoachId)
             {
                 return NotFound();
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(coaches);
+                    _context.Update(coach);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CoachesExists(coaches.Coaches_ID))
+                    if (!CoachExists(coach.CoachId))
                     {
                         return NotFound();
                     }
@@ -115,7 +115,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(coaches);
+            return View(coach);
         }
 
         // GET: Coaches/Delete/5
@@ -126,14 +126,14 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            var coaches = await _context.Coaches
-                .FirstOrDefaultAsync(m => m.Coaches_ID == id);
-            if (coaches == null)
+            var coach = await _context.Coaches
+                .FirstOrDefaultAsync(m => m.CoachId == id);
+            if (coach == null)
             {
                 return NotFound();
             }
 
-            return View(coaches);
+            return View(coach);
         }
 
         // POST: Coaches/Delete/5
@@ -143,21 +143,21 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         {
             if (_context.Coaches == null)
             {
-                return Problem("Entity set 'RANUISWANSONFOOTBALLCLUB_DATABASE.Coaches'  is null.");
+                return Problem("Entity set 'db.Coaches'  is null.");
             }
-            var coaches = await _context.Coaches.FindAsync(id);
-            if (coaches != null)
+            var coach = await _context.Coaches.FindAsync(id);
+            if (coach != null)
             {
-                _context.Coaches.Remove(coaches);
+                _context.Coaches.Remove(coach);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CoachesExists(int id)
+        private bool CoachExists(int id)
         {
-          return (_context.Coaches?.Any(e => e.Coaches_ID == id)).GetValueOrDefault();
+          return (_context.Coaches?.Any(e => e.CoachId == id)).GetValueOrDefault();
         }
     }
 }

@@ -1,10 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity;
-using RANUISWANSONFOOTBALLCLUB_WEBSITE.Areas.Identity;
-using RANUISWANSONFOOTBALLCLUB_WEBSITE.Data;
 using RANUISWANSONFOOTBALLCLUB_WEBSITEContext;
-using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Identity;
+using RANUISWANSONFOOTBALLCLUB_WEBSITE.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<db>(options =>
@@ -32,9 +30,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapRazorPages();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
 
 app.Run();

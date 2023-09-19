@@ -28,14 +28,16 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITEContext
             : base(options)
         {
         }
-        public DbSet<RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Coaches> Coaches { get; set; } = default!;
+        public DbSet<RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Coach> Coaches { get; set; } = default!;
 
-        public DbSet<RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Managers> Managers { get; set; } = default!;
+        public DbSet<RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Manager> Managers { get; set; } = default!;
 
-        public DbSet<RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Players> Players { get; set; } = default!;
+        public DbSet<RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Player> Players { get; set; } = default!;
 
-        public DbSet<RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Positions> Positions { get; set; } = default!;
+        public DbSet<RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Position> Positions { get; set; } = default!;
 
-        public DbSet<RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Transactions> Transactions { get; set; } = default!;
+        public DbSet<RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Transaction> Transactions { get; set; } = default!;
+
+        public DbSet<RANUISWANSONFOOTBALLCLUB_WEBSITE.Models.Team> Team { get; set; } = default!;
     }
 }

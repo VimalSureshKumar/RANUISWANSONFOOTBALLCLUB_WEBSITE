@@ -22,9 +22,9 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // GET: Players
         public async Task<IActionResult> Index()
         {
-              return _context.Players != null ? 
-                          View(await _context.Players.ToListAsync()) :
-                          Problem("Entity set 'RANUISWANSONFOOTBALLCLUB_DATABASE.Players'  is null.");
+            return _context.Players != null ?
+                        View(await _context.Players.ToListAsync()) :
+                        Problem("Entity set 'RANUISWANSONFOOTBALLCLUB_DATABASE.Players'  is null.");
         }
 
         // GET: Players/Details/5
@@ -35,19 +35,25 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            var players = await _context.Players
-                .FirstOrDefaultAsync(m => m.Player_ID == id);
-            if (players == null)
+            var player = await _context.Players
+                .Include(p => p.Coaches)
+                .Include(p => p.Positions)
+                .Include(p => p.Teams)
+                .FirstOrDefaultAsync(m => m.PlayerId == id);
+            if (player == null)
             {
                 return NotFound();
             }
 
-            return View(players);
+            return View(player);
         }
 
         // GET: Players/Create
         public IActionResult Create()
         {
+            ViewData["CoachId"] = new SelectList(_context.Coaches, "CoachId", "CoachId");
+            ViewData["PositionId"] = new SelectList(_context.Positions, "PositionId", "PositionId");
+            ViewData["TeamId"] = new SelectList(_context.Team, "TeamId", "TeamId");
             return View();
         }
 
@@ -56,15 +62,18 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Player_ID,Player_Name,Player_Gender,Player_Phone_Number,Player_Email")] Players players)
+        public async Task<IActionResult> Create([Bind("PlayerId,Player_Name,Player_Gender,Player_Dob,Player_Phone_Number,Player_Email,CoachId,TeamId,PositionId")] Player player)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                _context.Add(players);
+                _context.Add(player);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(players);
+            ViewData["CoachId"] = new SelectList(_context.Coaches, "CoachId", "CoachId", player.CoachId);
+            ViewData["PositionId"] = new SelectList(_context.Positions, "PositionId", "PositionId", player.PositionId);
+            ViewData["TeamId"] = new SelectList(_context.Team, "TeamId", "TeamId", player.TeamId);
+            return View(player);
         }
 
         // GET: Players/Edit/5
@@ -75,12 +84,15 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            var players = await _context.Players.FindAsync(id);
-            if (players == null)
+            var player = await _context.Players.FindAsync(id);
+            if (player == null)
             {
                 return NotFound();
             }
-            return View(players);
+            ViewData["CoachId"] = new SelectList(_context.Coaches, "CoachId", "CoachId", player.CoachId);
+            ViewData["PositionId"] = new SelectList(_context.Positions, "PositionId", "PositionId", player.PositionId);
+            ViewData["TeamId"] = new SelectList(_context.Team, "TeamId", "TeamId", player.TeamId);
+            return View(player);
         }
 
         // POST: Players/Edit/5
@@ -88,23 +100,23 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Player_ID,Player_Name,Player_Gender,Player_Phone_Number,Player_Email")] Players players)
+        public async Task<IActionResult> Edit(int id, [Bind("PlayerId,Player_Name,Player_Gender,Player_Dob,Player_Phone_Number,Player_Email,CoachId,TeamId,PositionId")] Player player)
         {
-            if (id != players.Player_ID)
+            if (id != player.PlayerId)
             {
                 return NotFound();
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(players);
+                    _context.Update(player);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PlayersExists(players.Player_ID))
+                    if (!PlayerExists(player.PlayerId))
                     {
                         return NotFound();
                     }
@@ -115,7 +127,10 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(players);
+            ViewData["CoachId"] = new SelectList(_context.Coaches, "CoachId", "CoachId", player.CoachId);
+            ViewData["PositionId"] = new SelectList(_context.Positions, "PositionId", "PositionId", player.PositionId);
+            ViewData["TeamId"] = new SelectList(_context.Team, "TeamId", "TeamId", player.TeamId);
+            return View(player);
         }
 
         // GET: Players/Delete/5
@@ -126,14 +141,17 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            var players = await _context.Players
-                .FirstOrDefaultAsync(m => m.Player_ID == id);
-            if (players == null)
+            var player = await _context.Players
+                .Include(p => p.Coaches)
+                .Include(p => p.Positions)
+                .Include(p => p.Teams)
+                .FirstOrDefaultAsync(m => m.PlayerId == id);
+            if (player == null)
             {
                 return NotFound();
             }
 
-            return View(players);
+            return View(player);
         }
 
         // POST: Players/Delete/5
@@ -143,21 +161,21 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         {
             if (_context.Players == null)
             {
-                return Problem("Entity set 'RANUISWANSONFOOTBALLCLUB_DATABASE.Players'  is null.");
+                return Problem("Entity set 'db.Players'  is null.");
             }
-            var players = await _context.Players.FindAsync(id);
-            if (players != null)
+            var player = await _context.Players.FindAsync(id);
+            if (player != null)
             {
-                _context.Players.Remove(players);
+                _context.Players.Remove(player);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PlayersExists(int id)
+        private bool PlayerExists(int id)
         {
-          return (_context.Players?.Any(e => e.Player_ID == id)).GetValueOrDefault();
+          return (_context.Players?.Any(e => e.PlayerId == id)).GetValueOrDefault();
         }
     }
 }
