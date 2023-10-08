@@ -48,7 +48,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // GET: Teams/Create
         public IActionResult Create()
         {
-            ViewData["ManagerId"] = new SelectList(_context.Managers, "ManagerId", "ManagerId");
+            ViewData["ManagerId"] = new SelectList(_context.Manager, "ManagerId", "ManagerId");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ManagerId"] = new SelectList(_context.Managers, "ManagerId", "ManagerId", team.ManagerId);
+            ViewData["ManagerId"] = new SelectList(_context.Manager, "ManagerId", "ManagerId", team.ManagerId);
             return View(team);
         }
 
@@ -82,7 +82,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
             {
                 return NotFound();
             }
-            ViewData["ManagerId"] = new SelectList(_context.Managers, "ManagerId", "ManagerId", team.ManagerId);
+            ViewData["ManagerId"] = new SelectList(_context.Manager, "ManagerId", "ManagerId", team.ManagerId);
             return View(team);
         }
 
@@ -98,7 +98,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {
@@ -118,7 +118,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ManagerId"] = new SelectList(_context.Managers, "ManagerId", "ManagerId", team.ManagerId);
+            ViewData["ManagerId"] = new SelectList(_context.Manager, "ManagerId", "ManagerId", team.ManagerId);
             return View(team);
         }
 

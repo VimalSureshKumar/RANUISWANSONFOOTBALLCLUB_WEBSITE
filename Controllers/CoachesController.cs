@@ -22,20 +22,20 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // GET: Coaches
         public async Task<IActionResult> Index()
         {
-              return _context.Coaches != null ? 
-                          View(await _context.Coaches.ToListAsync()) :
+              return _context.Coach != null ? 
+                          View(await _context.Coach.ToListAsync()) :
                           Problem("Entity set 'db.Coaches'  is null.");
         }
 
         // GET: Coaches/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Coaches == null)
+            if (id == null || _context.Coach == null)
             {
                 return NotFound();
             }
 
-            var coach = await _context.Coaches
+            var coach = await _context.Coach
                 .FirstOrDefaultAsync(m => m.CoachId == id);
             if (coach == null)
             {
@@ -58,7 +58,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CoachId,Coach_Name,Coach_Phone_Number,Coach_Email,Coach_Nationality")] Coach coach)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _context.Add(coach);
                 await _context.SaveChangesAsync();
@@ -70,12 +70,12 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // GET: Coaches/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Coaches == null)
+            if (id == null || _context.Coach == null)
             {
                 return NotFound();
             }
 
-            var coach = await _context.Coaches.FindAsync(id);
+            var coach = await _context.Coach.FindAsync(id);
             if (coach == null)
             {
                 return NotFound();
@@ -95,7 +95,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {
@@ -121,12 +121,12 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // GET: Coaches/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Coaches == null)
+            if (id == null || _context.Coach == null)
             {
                 return NotFound();
             }
 
-            var coach = await _context.Coaches
+            var coach = await _context.Coach
                 .FirstOrDefaultAsync(m => m.CoachId == id);
             if (coach == null)
             {
@@ -141,14 +141,14 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Coaches == null)
+            if (_context.Coach == null)
             {
                 return Problem("Entity set 'db.Coaches'  is null.");
             }
-            var coach = await _context.Coaches.FindAsync(id);
+            var coach = await _context.Coach.FindAsync(id);
             if (coach != null)
             {
-                _context.Coaches.Remove(coach);
+                _context.Coach.Remove(coach);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
 
         private bool CoachExists(int id)
         {
-          return (_context.Coaches?.Any(e => e.CoachId == id)).GetValueOrDefault();
+          return (_context.Coach?.Any(e => e.CoachId == id)).GetValueOrDefault();
         }
     }
 }

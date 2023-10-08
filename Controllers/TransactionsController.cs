@@ -22,19 +22,19 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // GET: Transactions
         public async Task<IActionResult> Index()
         {
-            var db = _context.Transactions.Include(t => t.Players);
+            var db = _context.Transaction.Include(t => t.Players);
             return View(await db.ToListAsync());
         }
 
         // GET: Transactions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Transactions == null)
+            if (id == null || _context.Transaction == null)
             {
                 return NotFound();
             }
 
-            var transaction = await _context.Transactions
+            var transaction = await _context.Transaction
                 .Include(t => t.Players)
                 .FirstOrDefaultAsync(m => m.TransactionId == id);
             if (transaction == null)
@@ -48,7 +48,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // GET: Transactions/Create
         public IActionResult Create()
         {
-            ViewData["PlayerId"] = new SelectList(_context.Players, "PlayerId", "PlayerId");
+            ViewData["PlayerId"] = new SelectList(_context.Player, "PlayerId", "PlayerId");
             return View();
         }
 
@@ -59,30 +59,30 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TransactionId,Transaction_Fee,Transaction_Date,PlayerId")] Transaction transaction)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _context.Add(transaction);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PlayerId"] = new SelectList(_context.Players, "PlayerId", "PlayerId", transaction.PlayerId);
+            ViewData["PlayerId"] = new SelectList(_context.Player, "PlayerId", "PlayerId", transaction.PlayerId);
             return View(transaction);
         }
 
         // GET: Transactions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Transactions == null)
+            if (id == null || _context.Transaction == null)
             {
                 return NotFound();
             }
 
-            var transaction = await _context.Transactions.FindAsync(id);
+            var transaction = await _context.Transaction.FindAsync(id);
             if (transaction == null)
             {
                 return NotFound();
             }
-            ViewData["PlayerId"] = new SelectList(_context.Players, "PlayerId", "PlayerId", transaction.PlayerId);
+            ViewData["PlayerId"] = new SelectList(_context.Player, "PlayerId", "PlayerId", transaction.PlayerId);
             return View(transaction);
         }
 
@@ -98,7 +98,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {
@@ -118,19 +118,19 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PlayerId"] = new SelectList(_context.Players, "PlayerId", "PlayerId", transaction.PlayerId);
+            ViewData["PlayerId"] = new SelectList(_context.Player, "PlayerId", "PlayerId", transaction.PlayerId);
             return View(transaction);
         }
 
         // GET: Transactions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Transactions == null)
+            if (id == null || _context.Transaction == null)
             {
                 return NotFound();
             }
 
-            var transaction = await _context.Transactions
+            var transaction = await _context.Transaction
                 .Include(t => t.Players)
                 .FirstOrDefaultAsync(m => m.TransactionId == id);
             if (transaction == null)
@@ -146,14 +146,14 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Transactions == null)
+            if (_context.Transaction == null)
             {
                 return Problem("Entity set 'db.Transactions'  is null.");
             }
-            var transaction = await _context.Transactions.FindAsync(id);
+            var transaction = await _context.Transaction.FindAsync(id);
             if (transaction != null)
             {
-                _context.Transactions.Remove(transaction);
+                _context.Transaction.Remove(transaction);
             }
             
             await _context.SaveChangesAsync();
@@ -162,7 +162,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
 
         private bool TransactionExists(int id)
         {
-          return (_context.Transactions?.Any(e => e.TransactionId == id)).GetValueOrDefault();
+          return (_context.Transaction?.Any(e => e.TransactionId == id)).GetValueOrDefault();
         }
     }
 }

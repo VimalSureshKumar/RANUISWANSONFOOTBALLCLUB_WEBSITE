@@ -22,20 +22,20 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // GET: Players
         public async Task<IActionResult> Index()
         {
-            return _context.Players != null ?
-                        View(await _context.Players.ToListAsync()) :
+            return _context.Player != null ?
+                        View(await _context.Player.ToListAsync()) :
                         Problem("Entity set 'RANUISWANSONFOOTBALLCLUB_DATABASE.Players'  is null.");
         }
 
         // GET: Players/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Players == null)
+            if (id == null || _context.Player == null)
             {
                 return NotFound();
             }
 
-            var player = await _context.Players
+            var player = await _context.Player
                 .Include(p => p.Coaches)
                 .Include(p => p.Positions)
                 .Include(p => p.Teams)
@@ -51,8 +51,8 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // GET: Players/Create
         public IActionResult Create()
         {
-            ViewData["CoachId"] = new SelectList(_context.Coaches, "CoachId", "CoachId");
-            ViewData["PositionId"] = new SelectList(_context.Positions, "PositionId", "PositionId");
+            ViewData["CoachId"] = new SelectList(_context.Coach, "CoachId", "CoachId");
+            ViewData["PositionId"] = new SelectList(_context.Position, "PositionId", "PositionId");
             ViewData["TeamId"] = new SelectList(_context.Team, "TeamId", "TeamId");
             return View();
         }
@@ -64,14 +64,14 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PlayerId,Player_Name,Player_Gender,Player_Dob,Player_Phone_Number,Player_Email,CoachId,TeamId,PositionId")] Player player)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _context.Add(player);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CoachId"] = new SelectList(_context.Coaches, "CoachId", "CoachId", player.CoachId);
-            ViewData["PositionId"] = new SelectList(_context.Positions, "PositionId", "PositionId", player.PositionId);
+            ViewData["CoachId"] = new SelectList(_context.Coach, "CoachId", "CoachId", player.CoachId);
+            ViewData["PositionId"] = new SelectList(_context.Position, "PositionId", "PositionId", player.PositionId);
             ViewData["TeamId"] = new SelectList(_context.Team, "TeamId", "TeamId", player.TeamId);
             return View(player);
         }
@@ -79,18 +79,18 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // GET: Players/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Players == null)
+            if (id == null || _context.Player == null)
             {
                 return NotFound();
             }
 
-            var player = await _context.Players.FindAsync(id);
+            var player = await _context.Player.FindAsync(id);
             if (player == null)
             {
                 return NotFound();
             }
-            ViewData["CoachId"] = new SelectList(_context.Coaches, "CoachId", "CoachId", player.CoachId);
-            ViewData["PositionId"] = new SelectList(_context.Positions, "PositionId", "PositionId", player.PositionId);
+            ViewData["CoachId"] = new SelectList(_context.Coach, "CoachId", "CoachId", player.CoachId);
+            ViewData["PositionId"] = new SelectList(_context.Position, "PositionId", "PositionId", player.PositionId);
             ViewData["TeamId"] = new SelectList(_context.Team, "TeamId", "TeamId", player.TeamId);
             return View(player);
         }
@@ -107,7 +107,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {
@@ -127,8 +127,8 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CoachId"] = new SelectList(_context.Coaches, "CoachId", "CoachId", player.CoachId);
-            ViewData["PositionId"] = new SelectList(_context.Positions, "PositionId", "PositionId", player.PositionId);
+            ViewData["CoachId"] = new SelectList(_context.Coach, "CoachId", "CoachId", player.CoachId);
+            ViewData["PositionId"] = new SelectList(_context.Position, "PositionId", "PositionId", player.PositionId);
             ViewData["TeamId"] = new SelectList(_context.Team, "TeamId", "TeamId", player.TeamId);
             return View(player);
         }
@@ -136,12 +136,12 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         // GET: Players/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Players == null)
+            if (id == null || _context.Player == null)
             {
                 return NotFound();
             }
 
-            var player = await _context.Players
+            var player = await _context.Player
                 .Include(p => p.Coaches)
                 .Include(p => p.Positions)
                 .Include(p => p.Teams)
@@ -159,14 +159,14 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Players == null)
+            if (_context.Player == null)
             {
                 return Problem("Entity set 'db.Players'  is null.");
             }
-            var player = await _context.Players.FindAsync(id);
+            var player = await _context.Player.FindAsync(id);
             if (player != null)
             {
-                _context.Players.Remove(player);
+                _context.Player.Remove(player);
             }
             
             await _context.SaveChangesAsync();
@@ -175,7 +175,7 @@ namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Controllers
 
         private bool PlayerExists(int id)
         {
-          return (_context.Players?.Any(e => e.PlayerId == id)).GetValueOrDefault();
+          return (_context.Player?.Any(e => e.PlayerId == id)).GetValueOrDefault();
         }
     }
 }

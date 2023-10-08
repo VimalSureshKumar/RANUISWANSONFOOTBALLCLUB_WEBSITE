@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using RANUISWANSONFOOTBALLCLUB_WEBSITE.Areas.Identity;
 
 namespace RANUISWANSONFOOTBALLCLUB_WEBSITE.Areas.Identity.Pages.Account.Manage
 {
